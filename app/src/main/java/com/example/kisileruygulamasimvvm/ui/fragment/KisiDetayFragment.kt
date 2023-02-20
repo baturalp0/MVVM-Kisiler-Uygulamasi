@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.navArgs
 import com.example.kisileruygulamasimvvm.R
 import com.example.kisileruygulamasimvvm.databinding.FragmentKisiDetayBinding
@@ -14,33 +15,22 @@ class KisiDetayFragment : Fragment() {
     private lateinit var tasarim:FragmentKisiDetayBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-       tasarim = FragmentKisiDetayBinding.inflate(inflater, container, false)
-
-        tasarim.toolbarKisiDetay.title = "Kişi Detay"
+        tasarim = DataBindingUtil.inflate(inflater,R.layout.fragment_kisi_detay, container, false) //DataBinding için gerekli olan kurulum.
+        tasarim.kisiDetayFragment = this //kisiDetayFragment'ı -> fragment_kisi_detay.xml içinde oluşturduk. Bu Güncelleme butonunun çalışması için gerekli yapı.(Aradaki bağlantıyı kuruyor.)
+        tasarim.kisiDetayToolbarBaslik = "Kişi Detay" //kisiDetayToolbarBaslik'ı -> fragment_kisi_detay.xml içinde oluşturduk
 
         val bundle:KisiDetayFragmentArgs by navArgs()
         //bundle bizim nesne alacağımız değişken olacak. KisiDetayFragmentArgs sınıfı ise navigation(main_activity_nav)
         //içinde eklediğimiz argument'ten dolayı oluşan bir sınıf. (argument'te kisi adında nesne verisi alacağız diye haber vermiştik.)
 
-        val gelenKisi = bundle.kisi
+        val gelenKisi = bundle.kisi //AnaSayfadaki kişi nesnesinden aldığımız verileri gelenKisi değişkenine aktardık.
 
-        tasarim.editTextKisiAd.setText(gelenKisi.kisi_ad)
-        tasarim.editTextKisiTel.setText(gelenKisi.kisi_tel)
-
-
-
-        tasarim.buttonGuncelle.setOnClickListener{
-            val kisi_ad = tasarim.editTextKisiAd.text.toString()
-            val kisi_tel = tasarim.editTextKisiTel.text.toString()
-
-            guncelle(gelenKisi.kisi_id,kisi_ad,kisi_tel)
-
-        }
+        tasarim.kisiNesnesi = gelenKisi
 
         return tasarim.root
     }
 
-    fun guncelle(kisi_id:Int,kisi_ad:String,kisi_tel:String){
+    fun buttonGuncelle(kisi_id:Int,kisi_ad:String,kisi_tel:String){
         Log.e("Kişi Güncelle","$kisi_id - $kisi_ad - $kisi_tel")
     }
 

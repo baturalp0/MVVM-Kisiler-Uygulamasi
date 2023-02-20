@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,13 +26,12 @@ class AnasayfaFragment : Fragment() ,SearchView.OnQueryTextListener {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        tasarim = FragmentAnasayfaBinding.inflate(inflater, container, false)
-
-        tasarim.toolbarAnasayfa.title="Kişiler"
+        tasarim = DataBindingUtil.inflate(inflater,R.layout.fragment_anasayfa, container, false)
+        tasarim.anasayfaFragment = this//anasayfaFragment'ı -> fragment_anasayfa.xml içinde oluşturduk. Bu fab butonunun çalışması için gerekli yapı.(Aradaki bağlantıyı kuruyor.)
+        tasarim.anasayfaToolbarBaslik="Kişiler" //anasayfaToolbarBaslik'ı -> fragment_anasayfa.xml içinde oluşturduk
         (activity as AppCompatActivity).setSupportActionBar(tasarim.toolbarAnasayfa) //Bu kodlama gerekliymiş. Bu şekilde toolbarAnasayfaya sen bir action bar sın demiş olduk. arama özelliği için bu önemliymiş
 
 
-        tasarim.rv.layoutManager = LinearLayoutManager(requireContext()) //rv için kullanılacak layoutu tanıttık.
 
         val kisilerListesi = ArrayList<Kisiler>()
         val k1 = Kisiler(1,"Ahmet","1111")
@@ -42,13 +42,8 @@ class AnasayfaFragment : Fragment() ,SearchView.OnQueryTextListener {
         kisilerListesi.add(k3)
 
         val adapter = KisilerAdapter(requireContext(),kisilerListesi)
-        tasarim.rv.adapter = adapter
+        tasarim.kisilerAdapter = adapter
 
-
-
-        tasarim.fab.setOnClickListener{
-            Navigation.findNavController(it).navigate(R.id.kisiKayitGecis) //fab butonuna tıklanınca sayfa geçişi
-        }
 
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -65,13 +60,11 @@ class AnasayfaFragment : Fragment() ,SearchView.OnQueryTextListener {
             }
         },viewLifecycleOwner,Lifecycle.State.RESUMED) //Burası android yaşam döngüsünden dolayı arayüzde sıkıntı yaşamamak için yapılan bir kodlama şimdilik ezbere bilsen yeterli.
 
-
-
-
-
-
-
         return tasarim.root
+    }
+
+    fun fabTikla(it:View){
+        Navigation.findNavController(it).navigate(R.id.kisiKayitGecis) //fab butonuna tıklanınca sayfa geçişi
     }
 
     override fun onQueryTextSubmit(query: String): Boolean { //Arama ikonuna basınca tüm veriyi arar.
