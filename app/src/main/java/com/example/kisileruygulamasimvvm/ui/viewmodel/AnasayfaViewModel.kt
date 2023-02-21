@@ -21,7 +21,7 @@ class AnasayfaViewModel @Inject constructor(var krepo : KisilerDaoRepository) : 
         krepo.kisiAra(aramaKelimesi)
     }
 
-    fun sil(kisi_id:Int){
+    fun sil(kisi_id:String){
         krepo.kisiSil(kisi_id)
     }
 
