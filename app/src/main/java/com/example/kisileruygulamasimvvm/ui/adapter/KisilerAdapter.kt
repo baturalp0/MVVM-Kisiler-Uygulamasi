@@ -12,9 +12,12 @@ import com.example.kisileruygulamasimvvm.data.entity.Kisiler
 import com.example.kisileruygulamasimvvm.databinding.CardTasarimBinding
 import com.example.kisileruygulamasimvvm.databinding.FragmentAnasayfaBinding
 import com.example.kisileruygulamasimvvm.ui.adapter.fragment.AnasayfaFragmentDirections
+import com.example.kisileruygulamasimvvm.ui.viewmodel.AnasayfaViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class KisilerAdapter (var mContext : Context, var kisilerListesi:List<Kisiler>)
+class KisilerAdapter (var mContext : Context,
+                      var kisilerListesi:List<Kisiler>,
+                      var viewModel : AnasayfaViewModel)
     :RecyclerView.Adapter<KisilerAdapter.CardTasarimTutucu>() {
     //mContext tasarımı bağlarken kullanılacak.Önemli
 
@@ -46,7 +49,7 @@ class KisilerAdapter (var mContext : Context, var kisilerListesi:List<Kisiler>)
         t.imageViewSil.setOnClickListener{
             Snackbar.make(it,"${kisi.kisi_ad} silinin mi?",Snackbar.LENGTH_LONG)
                 .setAction("EVET"){
-                    Log.e("Kişi Sil",kisi.kisi_id.toString())
+                    viewModel.sil(kisi.kisi_id)
                 }.show()
         }
     }
