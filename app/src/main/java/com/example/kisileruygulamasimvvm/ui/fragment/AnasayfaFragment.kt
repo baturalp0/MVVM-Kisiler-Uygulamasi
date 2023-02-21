@@ -20,6 +20,7 @@ import com.example.kisileruygulamasimvvm.databinding.FragmentAnasayfaBinding.inf
 import com.example.kisileruygulamasimvvm.ui.adapter.KisilerAdapter
 import com.example.kisileruygulamasimvvm.ui.viewmodel.AnasayfaViewModel
 import com.example.kisileruygulamasimvvm.ui.viewmodel.KisiKayitViewModel
+import com.example.kisileruygulamasimvvm.util.gecisYap
 
 
 class AnasayfaFragment : Fragment() ,SearchView.OnQueryTextListener {
@@ -65,7 +66,7 @@ class AnasayfaFragment : Fragment() ,SearchView.OnQueryTextListener {
     }
 
     fun fabTikla(it:View){
-        Navigation.findNavController(it).navigate(R.id.kisiKayitGecis) //fab butonuna tıklanınca sayfa geçişi
+        Navigation.gecisYap(it,R.id.kisiKayitGecis) //Extensions dosyasında oluşturduğumuz fonksiyonu kullanıyoruz. fab butonuna tıklanınca sayfa geçişi sağlanıyor.
     }
 
     override fun onQueryTextSubmit(query: String): Boolean { //Arama ikonuna basınca tüm veriyi arar.
